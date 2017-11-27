@@ -5,6 +5,15 @@
     <title></title>
   </head>
   <body>
-    ITS WORKINGGGGGGGGGG
+    <ul id='messages' class='list-unstyled' style='list-style:none;'></ul>
+    <form id='message-form'>
+      <input name='message' type='text' placeholder='Message' autofocus>
+      <input name='user' name='user' type='text' placeholder='UR NAME' autofocus>
+      <button>send</button>
+      <button onclick='' id='locationbutton'>send location</button>
+    </form>
   </body>
 </html>
+<script src="/socket.io/socket.io.js"></script>
+<script src='./js/libs/jquery-3.2.1.min.js'></script>
+<script src="./js/index.js"></script>
