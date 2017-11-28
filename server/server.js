@@ -4,10 +4,10 @@ const express = require('express');
 const socketiO = require('socket.io');
 var moment = require('moment');
 var date = moment();
-
+const JQuery = require( path.join(__dirname, '../public/js/libs/jquery-3.2.1.min.js'));
 const {generateMessage, generateLocationMessage} = require('./utils/message');
 const publicPath = path.join(__dirname, '../public');
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 var app = express();
 var server = http.createServer(app);
 var io = socketiO(server);
@@ -33,7 +33,7 @@ io.on('connection',function (socket){
 
   socket.on('createLocationMessage', function(coords){
     console.log(`location sent at ` + date.format('dd, h:mm a'));
-    io.emit('newLocationMessage', generateLocationMessage(`user`,coords.latitude, coords.longitude));
+    io.emit('newLocationMessage', generateLocationMessage(coords.latitude, coords.longitude));
   });
 });
 
