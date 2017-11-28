@@ -7,13 +7,14 @@
   <body>
     <ul id='messages' class='list-unstyled' style='list-style:none;'></ul>
     <form id='message-form'>
-      <input name='message' type='text' placeholder='Message' autofocus>
-      <input name='user' name='user' type='text' placeholder='UR NAME' autofocus>
+      <input name='message' type='text' placeholder='Message' autofocus autocomplete='off'  maxlength='50'>
+      <input name='user' name='user' type='text' placeholder='UR NAME' autofocus autocomplete='off' maxlength='6'>
       <button>send</button>
-      <button onclick='' id='locationbutton'>send location</button>
     </form>
+    <button id='locationbutton'>send location</button>
   </body>
 </html>
 <script src="/socket.io/socket.io.js"></script>
 <script src='./js/libs/jquery-3.2.1.min.js'></script>
+<script src="./js/libs/moment.js"></script>
 <script src="./js/index.js"></script>
