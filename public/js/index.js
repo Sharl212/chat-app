@@ -22,6 +22,7 @@ $('#message-form').on('submit', function (e) {
       text = $('[name=message]').val();
 
   if (text || user === 'text'){
+    $('.username').prop("disabled", true);
     socket.emit('createMessage', {
       from: `${user}`,
       text: `${text}`
@@ -30,6 +31,8 @@ $('#message-form').on('submit', function (e) {
     });
   }else if (text || user === '') {
     console.log('ENTER UR MESSAGE');
+  }else if(user !== 'text'){
+    console.log('ENTER YOUR USERNAME');
   };
 });
   // send location message structure //
@@ -46,22 +49,27 @@ socket.on('newLocationMessage', function(message){
 });
 
 // button for sending location //
-var locationButton = $('#locationbutton');
+var locationButton = $('#locationbutton'),
+    user = $('[name=user]').val(),
+    text = $('[name=message]').val();
 locationButton.on('click', function(){
   if(!navigator.geolocation){
     return alert('your browser does not support geolocation.');
   }
-
-  locationButton.attr('disabled', 'disabled').text('Sending location..');
-
   navigator.geolocation.getCurrentPosition(function (position) {
-    locationButton.removeAttr('disabled').text('Send location');
-    socket.emit('createLocationMessage',{
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude
-    });
+    if(user == ''){
+      console.log('ENTER YOUR USERNAME');
+    }else{
+      $('.username').prop("disabled", true);
+      locationButton.attr('disabled', 'disabled').text('Sending location..');
+      locationButton.removeAttr('disabled').text('Send location');
+      socket.emit('createLocationMessage',{
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+      });
+    }
   }, function(){
-    locationButton.attr('disable','disabled');
+    locationButton.attr('disable','disabled').text('Check your internet');
   });
 });
 

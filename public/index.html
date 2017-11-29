@@ -3,14 +3,15 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
   </head>
   <body>
-    <div>
+    <div class='container'>
     <ul id='messages' class='list-unstyled' style='list-style:none;'></ul>
+    <input class='col-2 username' name='user' name='user' type='text' placeholder='your name' autofocus autocomplete='off' maxlength='6'>
     <form id='message-form'>
-      <input name='message' type='text' placeholder='Message' autofocus autocomplete='off'  maxlength='50'>
-      <input name='user' name='user' type='text' placeholder='UR NAME' autofocus autocomplete='off' maxlength='6'>
-      <button>send</button>
+      <input class='col-6 input2' name='message' type='text' placeholder='message' autocomplete='off'  maxlength='150'>
     </form>
     <button id='locationbutton'>send location</button>
   </div>
@@ -19,11 +20,11 @@
 <script id='message-template' type='text/template'>
   <li class='message'>
     <div class='message__title'>
-      <h4>{{from}}</h4>
-      <span>{{createdAt}}</span>
+      <h4 class='from'>{{from}}</h4>
+      <span class='createdAt'>{{createdAt}}</span>
     </div>
     <div class='message__body'>
-      <p>{{text}}</p>
+      <p class='text'>{{text}}</p>
     </div>
   </li>
 </script>
@@ -31,11 +32,11 @@
 <script id='location-template' type='text/template'>
   <li class='message'>
     <div class='message__title'>
-      <h4>{{from}}</h4>
-      <span>{{createdAt}}</span>
+      <h4 class='from'>{{from}}</h4>
+      <span class='createdAt'>{{createdAt}}</span>
     </div>
     <div class='message__body'>
-      <p>{{text}}</p>
+      <p class='text'>{{text}}</p>
     </div>
     <div class='location__body'>
       <p>
@@ -49,3 +50,7 @@
 <script src="./js/libs/moment.js"></script>
 <script src="./js/libs/mustache.js"></script>
 <script src="./js/index.js"></script>
+<script src="./js/form.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>

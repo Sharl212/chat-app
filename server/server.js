@@ -32,8 +32,8 @@ io.on('connection',function (socket){
   });
 
   socket.on('createLocationMessage', function(coords){
+    io.emit('newLocationMessage', generateLocationMessage('Admin',coords.latitude, coords.longitude));
     console.log(`location sent at ` + date.format('dd, h:mm a'));
-    io.emit('newLocationMessage', generateLocationMessage(coords.latitude, coords.longitude));
   });
 });
 
