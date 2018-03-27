@@ -2,7 +2,7 @@ import socketIOClient from 'socket.io-client';
 
 import { generateMessage } from './generateMessage.js';
 
-const socket = socketIOClient(process.env.PORT || "http://localhost:4000");
+const socket = socketIOClient("/");
     
 socket.on('connection', ()=>{
   console.log('connected to the server');
