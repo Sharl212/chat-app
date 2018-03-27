@@ -13,6 +13,9 @@ const  express      = require('express'),
 //       users = require('./routes/users');
 
 // function {generateMessage}
+
+const port = process.env.PORT || 4000;
+
 const { generateMessage } = require('./public/javascripts/generateMessage');
 
 // modules installed
@@ -47,8 +50,8 @@ io.on('connection', (socket)=>{
 
 })
 
-server.listen("4000",()=>{
-  console.log("server is up");
+server.listen(port,()=>{
+  console.log(`server is up on ${port}`);
 });
 
 // catch 404 and forward to error handler
