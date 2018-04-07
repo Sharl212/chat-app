@@ -15,7 +15,7 @@ import './libs/Semantic-UI-CSS-master/semantic.css'
 import '.././src/form.css';
 import './libs/bootstrap/bootstrap.css';
 
-const socket = socketIOClient("http://localhost:4000/"); // connect to the server
+const socket = socketIOClient("/"); // connect to the server
 
 
 class App extends Component {

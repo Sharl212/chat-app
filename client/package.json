@@ -13,7 +13,6 @@
   "engines": {
     "node": "8.9.0"
   },
-  "proxy":"http://localhost:4000/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
