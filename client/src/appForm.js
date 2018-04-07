@@ -9,8 +9,8 @@ const sendmsg = (e) =>{
         from = $('input[name="from"]').val();
 
     socket.emit('createMessage', {
-    from    : `${from}`,
-    content : `${msg}`
+        from    : `${from}`,
+        content : `${msg}`
     });
 
     $('input[name="from"]').prop("disabled", true);

@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import { sendmsg } from './appForm.js';
 
+import $ from 'jquery';
 import './appStructure.js';
 
 // styling
@@ -14,14 +15,14 @@ import './libs/Semantic-UI-CSS-master/semantic.css'
 import '.././src/form.css';
 import './libs/bootstrap/bootstrap.css';
 
-const socket = socketIOClient("/"); // connect to the server
+const socket = socketIOClient("http://localhost:4000/"); // connect to the server
 
 
 class App extends Component {
 
   constructor(){
     super();
-    
+
     this.state = {
       messages:[]
     }
@@ -33,9 +34,18 @@ class App extends Component {
 
       const formattedDate = moment(message.createdAt).format('hh:mm:ss A'); // format timestamp to {11:20 AM}
 
-      this.setState(()=>{
+
+      $(function() { // scroll down when a new message is recieved.
+        const chatPanel = $('.panel-body');        
+        const scrollDown = () =>{
+          chatPanel.scrollTop(chatPanel.prop('scrollHeight'));
+        }
+        scrollDown();
+      });
+    
+      this.setState(()=>{        
         return {
-          messages: this.state.messages.concat({from: message.from, content: message.content, createdAt:formattedDate}) // connect the old messages to the new one
+          messages: this.state.messages.concat({from: message.from, content: message.content, createdAt: formattedDate}) // connect the old messages to the new one
         }
       })
     });
@@ -50,12 +60,11 @@ class App extends Component {
         <div className="row">
             <div className="col-12">
                 <div className="panel panel-primary">
-                  <input type="text" name="from" className='form-control' placeholder='Nickname..' required autoComplete="off"/><br/>
+                  <input type="text" name="from" className='form-control' placeholder='Nickname..' required autoFocus autoComplete="off"/><br/>
                     <div className="panel-body">
                         <ul className="chat">
                             {messages.map((messages)=>{
                               let key = Math.floor(Math.random()*999)+1; // random number generator for each message element
-
                               return (
                                 <li className="left clearfix" key={key}>
                                   <div className="chat-body clearfix">
@@ -63,7 +72,7 @@ class App extends Component {
                                           <strong className="primary-font">{messages.from}</strong> <small className="pull-right text-muted">
                                               <span className="glyphicon glyphicon-time"></span>{messages.createdAt}</small>
                                       </div><br/>
-                                    <p>{messages.content}</p> 
+                                    <p>{messages.content}</p>
                                 </div>
                               </li>
                               )
@@ -85,7 +94,7 @@ class App extends Component {
       </form>
     </div>
 
-                  
+
     );
   }
 }
