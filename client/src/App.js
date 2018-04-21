@@ -8,15 +8,15 @@ import { sendmsg } from './appForm.js';
 
 import $ from 'jquery';
 import './appStructure.js';
-
+import emoji from 'node-emoji';
 // styling
-import './App.css';
 import './libs/Semantic-UI-CSS-master/semantic.css'
 import '.././src/form.css';
 import './libs/bootstrap/bootstrap.css';
 
 const socket = socketIOClient("/"); // connect to the server
 
+// const $ = jQuery.noConflict();
 
 class App extends Component {
 
@@ -24,35 +24,74 @@ class App extends Component {
     super();
 
     this.state = {
-      messages:[]
+      messages:[],
+      emoji:[],
+      chosenEmoji: '',
     }
   }
 
   componentDidMount(){
 
      socket.on('newMessage', (message)=>{
+        const formattedDate = moment(message.createdAt).format('hh:mm:ss A'); // format timestamp to {11:20 AM}
+        const messageContent = message.content // the message content
 
-      const formattedDate = moment(message.createdAt).format('hh:mm:ss A'); // format timestamp to {11:20 AM}
-
-
-      $(function() { // scroll down when a new message is recieved.
-        const chatPanel = $('.panel-body');        
-        const scrollDown = () =>{
-          chatPanel.scrollTop(chatPanel.prop('scrollHeight'));
+        const emojis = {
+          ':('    :  ':cry:',
+          'pizza' :  ':pizza:',
+          ':D'    :  ':smile:',
+          ':d'    :  ':smile:',
+          'coffee':  ':coffee:'
         }
-        scrollDown();
-      });
-    
-      this.setState(()=>{        
-        return {
-          messages: this.state.messages.concat({from: message.from, content: message.content, createdAt: formattedDate}) // connect the old messages to the new one
-        }
-      })
+
+        const doesInclude = (val) => messageContent.includes(val); // check if the emoji string is included in messageContent
+
+        Object.entries(emojis).forEach( // loop through the object
+          (value,key) =>{
+              let UserEmoji = value[0]; // select the emoji
+              if(doesInclude(UserEmoji)){
+                // console.log(UserEmoji)
+                this.setState({
+                  emoji: UserEmoji, chosenEmoji: emoji.get(`${value[1]}`) // value[1] is the actual emoji format
+              })
+            }
+          }
+        )
+        
+
+        $(function() { // scroll down when a new message is recieved.
+          const chatPanel = $('.panel-body');
+          const scrollDown = () =>{
+            chatPanel.scrollTop(chatPanel.prop('scrollHeight'));
+          }
+          scrollDown();
+        });
+      
+        this.setState(()=>{
+          return {
+            messages: this.state.messages.concat({from: message.from, content: message.content.replace(this.state.emoji, this.state.chosenEmoji), createdAt: formattedDate}), // connect the old messages to the new one
+            emoji: [],
+            chosenEmoji: ''
+          }
+        });
     });
+
+
   }
 
   render() {
     let messages = this.state.messages; // contains whole message array
+     const myFunction = () => {
+          var popup = document.getElementById("myPopup");
+          popup.classList.toggle("show");
+      }
+
+      const searchEmoji = (() =>{
+          let emo = emoji.search(`:${$('#input').val()}:`).emoji;
+          console.log(emo);
+          $('#myPopup').text(emo);
+          myFunction();
+      });
 
     return (
     <div className="container">
@@ -72,7 +111,7 @@ class App extends Component {
                                           <strong className="primary-font">{messages.from}</strong> <small className="pull-right text-muted">
                                               <span className="glyphicon glyphicon-time"></span>{messages.createdAt}</small>
                                       </div><br/>
-                                    <p>{messages.content}</p>
+                                    <p>{messages.content}{this.state.emoji}</p>
                                 </div>
                               </li>
                               )
@@ -81,11 +120,17 @@ class App extends Component {
                     </div>
                     <div className="panel-footer">
                         <div className="input-group">
-                            <input id="btn-input" type="text" name='msgContent' className="form-control input-sm" placeholder="Type your message here..."  required autoComplete="off"/>
+                            <input id="input" type="text" name='msgContent' className="form-control input-sm" placeholder="Type your message here..." required autoComplete="off" />
                             <span className="input-group-btn">
                                 <button className="btn btn-warning btn-sm" id="btn-chat" type='submit'>
                                     Send</button>
                             </span>
+                            {/* <span className="input-group-btn popup">
+                            <div type='button' className="btn btn-success" onClick={searchEmoji}>
+                                <h3>Emoji</h3>
+                              </div>
+                              <span className="popuptext" id="myPopup"></span>
+                            </span> */}
                         </div>
                     </div>
                 </div>

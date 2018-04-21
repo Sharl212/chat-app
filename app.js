@@ -17,6 +17,7 @@ const  express      = require('express'),
 const port = process.env.PORT || 4000;
 
 const { generateMessage } = require('./public/javascripts/generateMessage');
+const emoji = require('node-emoji');
 
 // modules installed
 const socketiO = require('socket.io'),
@@ -42,7 +43,9 @@ io.on('connection', (socket)=>{
       console.log("disconnected from server!");
   });
 
-  socket.emit('newMessage', generateMessage("Admin", "Welcome to our Chat room"));
+  console.log(emoji.get(':smile:'));
+
+  socket.emit('newMessage', generateMessage("Admin", "Welcome to our Chat room :D"));
 
   socket.on('createMessage', (message)=>{
     io.emit('newMessage', generateMessage(message.from, message.content));
